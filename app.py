@@ -10,7 +10,11 @@ from reportlab.lib.enums import TA_LEFT, TA_CENTER
 from io import BytesIO
 
 # Page config
-st.set_page_config(page_title="CV-Job Matcher Pro", page_icon="🎯", layout="wide")
+st.set_page_config(
+    page_title="CV-Job Matcher Pro", 
+    page_icon="🎯", 
+    layout="wide"
+)
 
 # Initialize session state
 if 'cv_content' not in st.session_state:
@@ -18,15 +22,15 @@ if 'cv_content' not in st.session_state:
 
 # Title
 st.title("🎯 CV-Job Matcher Pro")
-st.write("Universal AI-powered CV analysis with cross-industry depth intelligence")
+st.write("Multi-Industry Career Analysis & ATS Optimizer")
 
 # Tabs
 tab1, tab2 = st.tabs(["🔍 Analyze CV", "📊 Match to Job"])
 
-# TAB 1: UNIVERSAL DEPTH ANALYSIS
+# TAB 1: Multi-Industry Career Analysis
 with tab1:
-    st.header("Step 1: Universal Intelligent CV Analysis")
-    st.write("🌍 **Cross-Industry Expert System:** Analyzes experience depth across ALL industries - Technology, Healthcare, Finance, Marketing, Education, Legal, Sales, Operations, and more")
+    st.header("Step 1: Multi-Industry Career Analysis")
+    st.write("**Expert Career Matching:** Analyzes your CV across 40+ career paths in 10 industries with industry-specific depth indicators")
     
     cv_analyze_file = st.file_uploader("Upload your CV (PDF/TXT):", type=['pdf', 'txt'], key="cv_file_analyze")
     
@@ -58,12 +62,11 @@ with tab1:
     
     if st.button("🔍 Analyze My CV", type="primary", key="analyze_cv_btn"):
         if st.session_state.cv_content:
-            with st.spinner("🌍 Universal expert system analyzing your CV across all industries..."):
+            with st.spinner("🔍 Analyzing your CV across multiple industries..."):
                 
-                def extract_universal_depth_signals(cv_text):
+                def extract_experience_signals(cv_text):
                     """
-                    UNIVERSAL DEPTH ANALYSIS - All Industries
-                    Extracts depth indicators for every major field
+                    Extract experience depth signals from CV
                     """
                     signals = {
                         'years_experience': 0,
@@ -200,7 +203,7 @@ with tab1:
                     ]
                     signals['industry_depth']['creative'] = sum(1 for kw in creative_depth if kw in cv_lower)
                     
-                    # Extract quantified achievements (UNIVERSAL)
+                    # Extract quantified achievements
                     achievement_patterns = [
                         r'(\d+)%\s*(?:increase|improvement|growth|reduction|decrease)',
                         r'(?:over|more than|up to)\s*(\d+)\s*(?:clients|projects|patients|students|cases|deals)',
@@ -213,7 +216,7 @@ with tab1:
                         matches = re.findall(pattern, cv_lower)
                         signals['quantified_achievements'].extend(matches)
                     
-                    # Extract leadership indicators (UNIVERSAL)
+                    # Extract leadership indicators
                     leadership_keywords = [
                         'led', 'spearheaded', 'managed', 'directed', 'supervised',
                         'coordinated', 'orchestrated', 'established', 'founded',
@@ -225,7 +228,7 @@ with tab1:
                         if keyword in cv_lower:
                             signals['leadership_indicators'].append(keyword)
                     
-                    # Extract certifications (UNIVERSAL)
+                    # Extract certifications
                     cert_patterns = [
                         r'\b(pmp|cpa|cfa|cma|cissp|cisa|ccna|ccnp|aws|azure|gcp)\b',
                         r'\b(certified|certification|license|licensed)\b',
@@ -248,14 +251,14 @@ with tab1:
                     
                     return signals
                 
-                def analyze_cv_universal(cv_text):
+                def analyze_cv_multi_industry(cv_text):
                     """
-                    UNIVERSAL ANALYSIS - All Industries with Equal Depth
+                    Multi-Industry Career Analysis with Depth Scoring
                     """
                     cv_lower = cv_text.lower()
-                    signals = extract_universal_depth_signals(cv_text)
+                    signals = extract_experience_signals(cv_text)
                     
-                    # Comprehensive career database - ALL INDUSTRIES
+                    # Career database with depth requirements
                     career_categories = {
                         # TECHNOLOGY
                         'Full-Stack Developer': {
@@ -547,7 +550,7 @@ with tab1:
                             'minimum_depth': 2,
                             'boost_if': 'portfolio-development' in signals['specializations']
                         },
-                        'ChatGPT / AI Prompt Engineer': {
+                        'ChatGPT / AI Prompt Specialist': {
                             'keywords': ['chatgpt', 'gpt', 'prompt', 'ai', 'artificial intelligence', 'llm'],
                             'weight': 3,
                             'industry': 'AI/Emerging Tech',
@@ -602,18 +605,18 @@ with tab1:
                             # Start with base weight
                             multiplier = details['weight']
                             
-                            # DEPTH ANALYSIS - Universal across all industries
+                            # Depth analysis
                             if industry_depth >= minimum_depth:
-                                multiplier += 0.5  # Boost for demonstrated depth
+                                multiplier += 0.5
                             elif industry_depth < minimum_depth and minimum_depth >= 4:
-                                multiplier -= 0.7  # Penalty for claiming advanced role without depth
+                                multiplier -= 0.7
                             elif industry_depth < minimum_depth:
-                                multiplier -= 0.3  # Smaller penalty for junior roles
+                                multiplier -= 0.3
                             
-                            # Critical keywords check (mainly for technical roles)
+                            # Critical keywords check
                             if 'critical_keywords' in details:
                                 if critical_keywords_found < len(details['critical_keywords']):
-                                    multiplier -= 0.8  # Heavy penalty if missing critical skills
+                                    multiplier -= 0.8
                             
                             # Specialization boost
                             if details.get('boost_if'):
@@ -622,7 +625,7 @@ with tab1:
                                 elif isinstance(details['boost_if'], str) and eval(details['boost_if']):
                                     multiplier += 0.7
                             
-                            # Experience boost (universal)
+                            # Experience boost
                             if signals['years_experience'] >= 5:
                                 multiplier += 0.5
                             elif signals['years_experience'] >= 3:
@@ -630,19 +633,19 @@ with tab1:
                             elif signals['years_experience'] >= 1:
                                 multiplier += 0.1
                             
-                            # Quantified achievements boost (universal)
+                            # Achievements boost
                             if len(signals['quantified_achievements']) >= 5:
                                 multiplier += 0.4
                             elif len(signals['quantified_achievements']) >= 3:
                                 multiplier += 0.2
                             
-                            # Leadership indicators boost (universal)
+                            # Leadership boost
                             if len(signals['leadership_indicators']) >= 5:
                                 multiplier += 0.3
                             elif len(signals['leadership_indicators']) >= 3:
                                 multiplier += 0.15
                             
-                            # Certifications boost (universal)
+                            # Certifications boost
                             if len(signals['certifications']) >= 2:
                                 multiplier += 0.3
                             elif len(signals['certifications']) >= 1:
@@ -673,12 +676,12 @@ with tab1:
                     
                     return sorted_roles[:12], signals
                 
-                roles, signals = analyze_cv_universal(st.session_state.cv_content)
+                roles, signals = analyze_cv_multi_industry(st.session_state.cv_content)
                 
-                st.success("✅ Universal Analysis Complete!")
+                st.success("✅ Analysis Complete!")
                 st.markdown("---")
                 
-                # Show experience insights
+                # Experience metrics
                 col1, col2, col3, col4 = st.columns(4)
                 
                 with col1:
@@ -699,10 +702,10 @@ with tab1:
                     cert_count = len(set(signals['certifications']))
                     st.metric("Certifications", cert_count, delta="Excellent" if cert_count >= 2 else "Consider adding")
                 
-                # Show industry depth analysis
+                # Industry depth visualization
                 st.markdown("---")
-                st.subheader("🌍 Industry Depth Analysis")
-                st.caption("Depth score shows demonstrated experience in each industry")
+                st.subheader("🌍 Industry Depth Scores")
+                st.caption("Shows demonstrated experience in each industry based on specific depth indicators")
                 
                 industry_cols = st.columns(5)
                 industry_names = ['Technology', 'Healthcare', 'Finance', 'Marketing', 'Education']
@@ -738,7 +741,7 @@ with tab1:
                 
                 st.markdown("---")
                 st.subheader("💼 Recommended Career Paths")
-                st.caption("🌍 **Universal Analysis:** Ranked by demonstrated experience depth and quantified achievements across all industries")
+                st.caption("📊 **Based on:** Keyword matching, industry depth scores, quantified achievements, and experience level")
                 
                 if roles:
                     col1, col2 = st.columns(2)
@@ -771,29 +774,29 @@ with tab1:
                     
                     st.success("""
                     ✅ **Next Steps:**
-                    1. Focus on roles with **High confidence** - these match your demonstrated experience
-                    2. For **Medium/Low confidence** roles, add quantified achievements and depth indicators
-                    3. Use these **exact titles** when searching jobs
-                    4. Go to **Tab 2** for ATS job matching
+                    1. Focus on roles with **High confidence** ratings
+                    2. Use these **exact titles** when searching jobs
+                    3. Go to **Tab 2** for ATS job matching
+                    4. Your CV is automatically saved for Tab 2
                     """)
                     
-                    # Universal gap analysis
+                    # Enhancement recommendations
                     st.markdown("---")
-                    st.subheader("🔍 Profile Enhancement Recommendations")
+                    st.subheader("💡 Profile Enhancement Tips")
                     
                     if signals['years_experience'] < 2:
-                        st.warning("⚠️ **Experience:** Add more years or projects to strengthen senior role applications")
+                        st.warning("⚠️ **Experience:** Add projects or freelance work to strengthen applications")
                     
                     if len(signals['quantified_achievements']) < 3:
-                        st.info("💡 **Achievements:** Add numbers! (30% increase, $50K saved, 100+ clients served)")
+                        st.info("💡 **Achievements:** Add numbers (30% increase, $50K saved, 100+ clients)")
                     
                     if len(signals['leadership_indicators']) < 3:
-                        st.info("💡 **Leadership:** Use stronger verbs (led, spearheaded, managed, directed)")
+                        st.info("💡 **Leadership:** Use action verbs (led, managed, directed, spearheaded)")
                     
                     if len(signals['certifications']) == 0:
-                        st.info("💡 **Certifications:** Industry certifications boost credibility (PMP, CPA, AWS, etc.)")
+                        st.info("💡 **Certifications:** Industry certifications boost credibility")
                     
-                    # Show which industry has most depth
+                    # Show strongest industry
                     max_depth_industry = max(signals['industry_depth'], key=signals['industry_depth'].get)
                     max_depth_score = signals['industry_depth'][max_depth_industry]
                     
@@ -806,12 +809,12 @@ with tab1:
         else:
             st.warning("⚠️ Please upload or paste your CV first")
 
-# TAB 2: INTELLIGENT ATS MATCHING
+# TAB 2: ATS Job Matching
 with tab2:
-    st.header("Step 2: Intelligent ATS Job Matching")
+    st.header("Step 2: ATS-Style Job Matching")
     st.write("""
-    🧠 **Context-Aware ATS System:** Goes beyond keyword matching to understand synonyms, 
-    related skills, experience levels, and transferable competencies.
+    🤖 **ATS Compatibility Analyzer:** Simulates how Applicant Tracking Systems scan your CV 
+    against job descriptions using keyword and phrase matching.
     """)
     
     if not st.session_state.cv_content:
@@ -837,7 +840,7 @@ with tab2:
             
             preview_text = '\n'.join(preview_lines)
             if len(st.session_state.cv_content) > 1500 or len(cv_lines) > 30:
-                preview_text += "\n\n... (CV content continues)"
+                preview_text += "\n\n... (CV continues)"
             
             st.text_area(
                 "CV Content (auto-loaded):",
@@ -848,7 +851,7 @@ with tab2:
             
             word_count = len(st.session_state.cv_content.split())
             st.caption(f"📊 {word_count} words | {len(st.session_state.cv_content)} characters")
-            st.success("✅ CV loaded for analysis!")
+            st.success("✅ CV loaded!")
         else:
             st.info("👈 Upload CV in Tab 1 first")
     
@@ -857,31 +860,27 @@ with tab2:
         jd_text = st.text_area(
             "Paste complete job description:",
             height=400,
-            placeholder="""Paste the full job posting including:
-- Job title and level
-- Required qualifications
+            placeholder="""Paste full job posting including:
+- Job title
+- Qualifications
 - Responsibilities
-- Technical skills
+- Skills required
 - Experience requirements
-- Education/certifications
 
-More details = more accurate analysis!""",
+More details = better analysis!""",
             key="jd_match"
         )
 
-    def extract_context_aware_keywords(text):
+    def extract_ats_keywords(text):
         """
-        INTELLIGENT KEYWORD EXTRACTION
-        - Understands synonyms and related terms
-        - Recognizes skill variations
-        - Context-aware matching
+        Extract keywords and important phrases for ATS matching
         """
         text_lower = text.lower()
         
-        # Extract base words
+        # Extract words
         words = re.findall(r'\b[a-z]{4,}\b', text_lower)
         
-        # Comprehensive stop words
+        # Stop words
         stop_words = {
             'that', 'with', 'have', 'this', 'from', 'were', 'been', 'will', 
             'would', 'there', 'their', 'what', 'when', 'where', 'which', 'while',
@@ -893,53 +892,9 @@ More details = more accurate analysis!""",
         
         keywords = set([w for w in words if w not in stop_words and len(w) > 3])
         
-        # SYNONYM MAPPING - Universal across industries
-        synonym_groups = {
-            # Technology
-            'programming': ['coding', 'development', 'software development'],
-            'javascript': ['js', 'ecmascript'],
-            'python': ['py'],
-            'database': ['sql', 'nosql', 'data storage'],
-            'frontend': ['front-end', 'front end', 'client side'],
-            'backend': ['back-end', 'back end', 'server side'],
-            'api': ['rest', 'restful', 'web service'],
-            
-            # Healthcare
-            'patient care': ['patient management', 'clinical care', 'bedside care'],
-            'nurse': ['nursing', 'rn', 'registered nurse'],
-            'medical': ['clinical', 'healthcare'],
-            
-            # Finance
-            'accounting': ['bookkeeping', 'financial reporting'],
-            'audit': ['auditing', 'internal audit'],
-            'financial analysis': ['financial modeling', 'forecasting'],
-            
-            # Marketing
-            'marketing': ['digital marketing', 'advertising', 'promotion'],
-            'social media': ['social', 'facebook', 'instagram', 'twitter'],
-            'seo': ['search engine optimization', 'search optimization'],
-            
-            # Sales
-            'sales': ['selling', 'business development'],
-            'client': ['customer', 'account', 'client relations'],
-            
-            # Management (universal)
-            'managed': ['led', 'directed', 'supervised', 'coordinated'],
-            'project management': ['program management', 'project coordination'],
-        }
-        
-        # Expand keywords with synonyms
-        expanded_keywords = keywords.copy()
-        for main_term, synonyms in synonym_groups.items():
-            if main_term in text_lower:
-                expanded_keywords.add(main_term)
-            for syn in synonyms:
-                if syn in text_lower:
-                    expanded_keywords.add(main_term)
-        
-        # Extract job-relevant phrases (same as before but enhanced)
+        # Important phrases
         important_phrases = [
-            # Technology
+            # Tech
             'machine learning', 'deep learning', 'artificial intelligence', 'data science',
             'data analysis', 'business intelligence', 'software development', 'web development',
             'full stack', 'front end', 'back end', 'cloud computing', 'devops',
@@ -981,105 +936,39 @@ More details = more accurate analysis!""",
             if phrase in text_lower:
                 found_phrases.add(phrase)
         
-        return expanded_keywords, found_phrases
+        return keywords, found_phrases
     
-    def intelligent_ats_matching(cv_text, jd_text):
+    def ats_compatibility_score(cv_text, jd_text):
         """
-        INTELLIGENT ATS MATCHING
-        - Context-aware synonym matching
-        - Experience level detection
-        - Transferable skills recognition
-        - Gap analysis with suggestions
+        Calculate ATS compatibility score
         """
         
-        cv_keywords, cv_phrases = extract_context_aware_keywords(cv_text)
-        jd_keywords, jd_phrases = extract_context_aware_keywords(jd_text)
+        cv_keywords, cv_phrases = extract_ats_keywords(cv_text)
+        jd_keywords, jd_phrases = extract_ats_keywords(jd_text)
         
-        # Direct matches
+        # Matches
         keyword_matches = cv_keywords.intersection(jd_keywords)
         phrase_matches = cv_phrases.intersection(jd_phrases)
         
-        # Missing items
+        # Missing
         missing_keywords = jd_keywords - cv_keywords
         missing_phrases = jd_phrases - cv_phrases
         
-        # INTELLIGENT ANALYSIS
-        # Detect experience level required
-        cv_lower = cv_text.lower()
-        jd_lower = jd_text.lower()
-        
-        experience_signals = {
-            'senior': ['senior', 'lead', 'principal', 'director', '10+ years', '8+ years'],
-            'mid': ['mid-level', 'intermediate', '5+ years', '3-5 years'],
-            'junior': ['junior', 'entry', '1-2 years', 'graduate']
-        }
-        
-        jd_level = 'mid'  # default
-        for level, indicators in experience_signals.items():
-            if any(ind in jd_lower for ind in indicators):
-                jd_level = level
-                break
-        
-        cv_experience_years = 0
-        year_matches = re.findall(r'(\d+)\+?\s*years?\s*(?:of\s*)?experience', cv_lower)
-        if year_matches:
-            cv_experience_years = max([int(y) for y in year_matches if y.isdigit()])
-        
-        # Calculate base score
+        # Calculate score (phrases weighted 2.5x more)
         total_jd_items = len(jd_keywords) + (len(jd_phrases) * 2.5)
         total_matches = len(keyword_matches) + (len(phrase_matches) * 2.5)
         
         if total_jd_items == 0:
             compatibility_score = 0
         else:
-            compatibility_score = (total_matches / total_jd_items) * 100
+            compatibility_score = int((total_matches / total_jd_items) * 100)
         
-        # INTELLIGENT ADJUSTMENTS
-        # Experience level matching
-        if jd_level == 'senior' and cv_experience_years < 5:
-            compatibility_score *= 0.85  # Reduce if under-experienced
-        elif jd_level == 'junior' and cv_experience_years > 8:
-            compatibility_score *= 0.95  # Slight reduce if over-qualified
+        compatibility_score = min(compatibility_score, 99)
         
-        # Boost for leadership indicators in CV
-        leadership_words = ['led', 'managed', 'directed', 'spearheaded']
-        if any(word in cv_lower for word in leadership_words):
-            compatibility_score += 3
-        
-        # Boost for quantified achievements
-        if re.search(r'\d+%', cv_text):
-            compatibility_score += 2
-        
-        compatibility_score = min(int(compatibility_score), 99)
-        
-        # CONTEXTUAL GAPS
-        contextual_insights = {
-            'missing_critical': [],
-            'transferable_skills': [],
-            'experience_gap': None
-        }
-        
-        # Identify critical missing skills
-        critical_tech = {'python', 'java', 'javascript', 'sql', 'aws', 'azure'}
-        critical_missing = missing_keywords.intersection(critical_tech)
-        if critical_missing:
-            contextual_insights['missing_critical'] = list(critical_missing)
-        
-        # Detect transferable skills
-        if 'project management' in jd_phrases and 'managed' in cv_lower:
-            contextual_insights['transferable_skills'].append('project management experience (demonstrated through "managed")')
-        
-        if 'data analysis' in jd_phrases and 'analytics' in cv_lower:
-            contextual_insights['transferable_skills'].append('analytics experience')
-        
-        # Experience gap
-        if jd_level == 'senior' and cv_experience_years < 5:
-            contextual_insights['experience_gap'] = f"Job requires senior level ({jd_level}), you have {cv_experience_years} years"
-        
-        return compatibility_score, keyword_matches, phrase_matches, missing_keywords, missing_phrases, contextual_insights
+        return compatibility_score, keyword_matches, phrase_matches, missing_keywords, missing_phrases
     
     def create_pdf_report(analysis_text, match_score):
-        """PDF report generation"""
+        """Generate PDF report"""
         buffer = BytesIO()
         doc = SimpleDocTemplate(buffer, pagesize=letter, topMargin=0.5*inch, bottomMargin=0.5*inch)
         
@@ -1095,7 +984,7 @@ More details = more accurate analysis!""",
         
         story = []
         story.append(Paragraph("CV-JOB MATCHER PRO", title_style))
-        story.append(Paragraph("Intelligent ATS Analysis Report", styles['Heading3']))
+        story.append(Paragraph("ATS Compatibility Analysis Report", styles['Heading3']))
         story.append(Spacer(1, 0.2*inch))
         
         date_text = f"<b>Generated:</b> {datetime.now().strftime('%B %d, %Y at %I:%M %p')}"
@@ -1116,59 +1005,51 @@ More details = more accurate analysis!""",
         
         story.append(Spacer(1, 0.5*inch))
         footer_style = ParagraphStyle('Footer', parent=styles['Normal'], fontSize=9, textColor='gray', alignment=TA_CENTER)
-        story.append(Paragraph("CV-Job Matcher Pro | Intelligent ATS Analysis", footer_style))
-        story.append(Paragraph("Universal Career Matching System", footer_style))
+        story.append(Paragraph("CV-Job Matcher Pro | ATS Analysis", footer_style))
+        story.append(Paragraph("Multi-Industry Career Matching System", footer_style))
         
         doc.build(story)
         buffer.seek(0)
         return buffer
 
-    # ATS ANALYSIS BUTTON
-    if st.button("🧠 Run Intelligent ATS Analysis", type="primary", key="ats_analyze_btn", use_container_width=True):
+    # Analysis button
+    if st.button("🤖 Run ATS Analysis", type="primary", key="ats_btn", use_container_width=True):
         if not st.session_state.cv_content:
-            st.error("❌ **ERROR:** Go to Tab 1 and upload your CV first!")
+            st.error("❌ Go to Tab 1 and upload your CV first!")
         elif not jd_text:
-            st.warning("⚠️ **WARNING:** Paste the job description above")
+            st.warning("⚠️ Paste the job description above")
         else:
-            with st.spinner("🧠 Intelligent ATS system analyzing with context awareness..."):
+            with st.spinner("🤖 Analyzing ATS compatibility..."):
                 try:
-                    score, keyword_matches, phrase_matches, missing_keywords, missing_phrases, insights = intelligent_ats_matching(
+                    score, keyword_matches, phrase_matches, missing_keywords, missing_phrases = ats_compatibility_score(
                         st.session_state.cv_content, 
                         jd_text
                     )
                     
-                    st.success("✅ Intelligent Analysis Complete!")
+                    st.success("✅ Analysis Complete!")
                     st.markdown("---")
                     
                     # Score display
-                    st.subheader("🎯 ATS COMPATIBILITY RATING")
+                    st.subheader("🎯 ATS COMPATIBILITY SCORE")
                     col1, col2, col3 = st.columns([1,2,1])
                     with col2:
                         if score >= 80:
                             st.success(f"# {score}%")
-                            st.success("**✅ EXCELLENT - High ATS pass rate!**")
+                            st.success("**✅ EXCELLENT - High pass rate!**")
                             recommendation = "Your CV is well-optimized. Apply with confidence!"
                         elif score >= 60:
                             st.warning(f"# {score}%")
-                            st.warning("**⚠️ GOOD - Will likely pass but can improve**")
-                            recommendation = "Solid match. Adding missing keywords will strengthen your application."
+                            st.warning("**⚠️ GOOD - Can improve**")
+                            recommendation = "Solid match. Add missing keywords to strengthen."
                         else:
                             st.error(f"# {score}%")
-                            st.error("**❌ NEEDS WORK - Low ATS pass rate**")
-                            recommendation = "Significant gaps detected. Focus on adding missing skills below."
+                            st.error("**❌ NEEDS WORK - Low pass rate**")
+                            recommendation = "Significant gaps. Focus on adding missing skills."
                     
                     st.info(f"**💡 Recommendation:** {recommendation}")
-                    
-                    # Show contextual insights if any
-                    if insights.get('experience_gap'):
-                        st.warning(f"⏰ **Experience Gap:** {insights['experience_gap']}")
-                    
-                    if insights.get('transferable_skills'):
-                        st.success(f"✨ **Transferable Skills Detected:** {', '.join(insights['transferable_skills'])}")
-                    
                     st.markdown("---")
                     
-                    # Detailed analysis
+                    # Detailed breakdown
                     col1, col2 = st.columns(2)
                     
                     with col1:
@@ -1176,76 +1057,69 @@ More details = more accurate analysis!""",
                         
                         st.write(f"**Matching Keywords:** {len(keyword_matches)}")
                         if keyword_matches:
-                            st.success("These keywords passed ATS:")
-                            keyword_display = ", ".join(sorted(list(keyword_matches))[:40])
-                            st.write(keyword_display)
+                            st.success("ATS detected these keywords:")
+                            st.write(", ".join(sorted(list(keyword_matches))[:40]))
                         
                         st.markdown("---")
                         
-                        st.write(f"**Matching Key Phrases:** {len(phrase_matches)}")
+                        st.write(f"**Matching Phrases:** {len(phrase_matches)}")
                         if phrase_matches:
-                            st.success("✨ Industry-specific phrases found:")
-                            phrase_display = ", ".join(sorted(list(phrase_matches))[:25])
-                            st.write(phrase_display)
+                            st.success("✨ Important phrases found:")
+                            st.write(", ".join(sorted(list(phrase_matches))[:25]))
                     
                     with col2:
                         st.subheader("❌ MISSING FROM YOUR CV")
                         
                         st.write(f"**Missing Keywords:** {len(missing_keywords)}")
                         if missing_keywords:
-                            st.error("⚠️ **CRITICAL:** ATS looking for these:")
-                            critical_missing = sorted(list(missing_keywords))[:40]
-                            st.write(", ".join(critical_missing))
-                            
-                            if insights.get('missing_critical'):
-                                st.warning(f"🔴 **High Priority:** {', '.join(insights['missing_critical'])}")
+                            st.error("⚠️ ATS looking for these:")
+                            st.write(", ".join(sorted(list(missing_keywords))[:40]))
                         
                         st.markdown("---")
                         
-                        st.write(f"**Missing Key Phrases:** {len(missing_phrases)}")
+                        st.write(f"**Missing Phrases:** {len(missing_phrases)}")
                         if missing_phrases:
-                            st.warning("Important phrases not detected:")
-                            missing_phrase_display = ", ".join(sorted(list(missing_phrases))[:25])
-                            st.write(missing_phrase_display)
+                            st.warning("Important phrases not found:")
+                            st.write(", ".join(sorted(list(missing_phrases))[:25]))
                     
                     # Recommendations
                     st.markdown("---")
-                    st.subheader("📋 INTELLIGENT RECOMMENDATIONS")
+                    st.subheader("📋 RECOMMENDATIONS")
                     
                     if score >= 80:
                         st.success("""
                         **✅ Your CV is ATS-Ready!**
                         
-                        1. Maintain all matching keywords
-                        2. Use standard formatting (avoid tables/images)
+                        1. Keep all matching keywords
+                        2. Use standard formatting
                         3. Save as .docx or .pdf
                         4. Apply confidently!
                         """)
                     elif score >= 60:
                         st.warning("""
-                        **⚠️ Strong Foundation - Quick Wins Available**
+                        **⚠️ Good Foundation - Quick Wins Available**
                         
-                        1. Add the missing high-priority keywords listed above
-                        2. Incorporate job-specific phrases naturally
+                        1. Add missing keywords listed above
+                        2. Include industry-specific phrases
                         3. Quantify achievements with numbers
-                        4. Mirror exact terminology from job description
+                        4. Mirror job description terminology
                         5. Retest after updates!
                         """)
                     else:
                         st.error("""
                         **❌ Significant Optimization Required**
                         
-                        1. **URGENT:** Add missing critical skills you actually possess
-                        2. Use industry-standard terminology from job description
-                        3. Restructure with clear headers: Skills, Experience, Education
-                        4. Avoid graphics/tables that ATS can't read
-                        5. Consider tailoring CV specifically for this role
-                        6. Update and retest here!
+                        1. **URGENT:** Add missing critical skills you have
+                        2. Use industry terminology from job description
+                        3. Restructure: Skills, Experience, Education
+                        4. Avoid graphics/tables (ATS can't read them)
+                        5. Tailor CV for this specific role
+                        6. Update and retest!
                         """)
                     
-                    # Download report
+                    # Download reports
                     analysis_report = f"""
-INTELLIGENT ATS COMPATIBILITY ANALYSIS
+ATS COMPATIBILITY ANALYSIS
 {'='*70}
 
 COMPATIBILITY SCORE: {score}%
@@ -1256,7 +1130,7 @@ SUMMARY:
 KEYWORDS FOUND ({len(keyword_matches)}):
 {', '.join(sorted(list(keyword_matches))[:50])}
 
-KEY PHRASES FOUND ({len(phrase_matches)}):
+PHRASES FOUND ({len(phrase_matches)}):
 {', '.join(sorted(list(phrase_matches))[:30])}
 
 MISSING KEYWORDS ({len(missing_keywords)}):
@@ -1265,23 +1139,19 @@ MISSING KEYWORDS ({len(missing_keywords)}):
 MISSING PHRASES ({len(missing_phrases)}):
 {', '.join(sorted(list(missing_phrases))[:30])}
 
-CONTEXTUAL INSIGHTS:
-{insights.get('experience_gap', 'Experience level matches')}
-Transferable Skills: {', '.join(insights.get('transferable_skills', ['None detected']))}
-
 RECOMMENDATIONS:
-- Focus on missing high-priority keywords
+- Add missing keywords you actually possess
 - Use exact terminology from job description
-- Add quantified achievements
+- Include quantified achievements
 - Ensure ATS-friendly formatting
 - Retest after updates
 
 Generated: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}
-Intelligent ATS Analysis - CV-Job Matcher Pro
+CV-Job Matcher Pro - ATS Analysis
                     """
                     
                     st.markdown("---")
-                    st.subheader("📥 Download Analysis Report")
+                    st.subheader("📥 Download Reports")
                     
                     col1, col2 = st.columns(2)
                     
@@ -1305,52 +1175,50 @@ Intelligent ATS Analysis - CV-Job Matcher Pro
                                 use_container_width=True
                             )
                         except Exception as e:
-                            st.info("PDF unavailable - TXT download available above")
+                            st.info("PDF unavailable - TXT download available")
                     
                 except Exception as e:
-                    st.error(f"❌ Analysis Error: {str(e)}")
+                    st.error(f"❌ Error: {str(e)}")
 
 # Sidebar
 with st.sidebar:
-    st.header("ℹ️ About This Tool")
+    st.header("ℹ️ About")
     st.write("""
     **CV-Job Matcher Pro**
+    Multi-Industry Career Analysis & ATS Optimizer
     
-    🌍 **Universal System:**
-    
-    **Tab 1:** Cross-industry expert
-    - ALL industries analyzed equally
-    - Experience depth detection
-    - Quantified achievements tracking
+    **Tab 1:** Career Analysis
     - 40+ career paths
+    - 10 industries covered
+    - Depth scoring system
+    - Achievement tracking
     
-    **Tab 2:** Intelligent ATS
-    - Context-aware matching
-    - Synonym recognition
-    - Transferable skills detection
-    - Experience level analysis
+    **Tab 2:** ATS Matching
+    - Keyword analysis
+    - Phrase extraction
+    - Compatibility scoring
+    - Gap identification
     """)
     
-    st.header("🌍 Industries Covered")
+    st.header("🌍 Industries")
     st.info("""
     Technology • Healthcare • Finance
     Marketing • Education • Legal
     Sales • Operations • HR • Creative
-    
-    **Equal depth analysis for all!**
     """)
     
-    st.header("⚡ What Makes This Advanced")
+    st.header("⚡ Features")
     st.success("""
-    ✅ Universal depth analysis (not just tech)
-    ✅ Context-aware ATS matching
-    ✅ Synonym & related term recognition
-    ✅ Transferable skills detection
-    ✅ Experience level matching
-    ✅ Quantified achievement tracking
-    ✅ Leadership indicator detection
+    ✅ Multi-industry depth analysis
+    ✅ ATS-style keyword matching
+    ✅ Experience level detection
+    ✅ Achievement tracking
     ✅ Certification recognition
+    ✅ Downloadable reports
     """)
+    
+    st.markdown("---")
+    st.caption("Moringa School Capstone 2025")
 
 st.markdown("---")
-st.markdown("*Universal Career Intelligence System | Advanced ATS Matching*")
+st.markdown("*Multi-Industry Career Analysis System | Moringa School AI Capstone Project*")
